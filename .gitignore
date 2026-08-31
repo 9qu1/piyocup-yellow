@@ -1,0 +1,4 @@
+# 平文はローカルのみ（公開リポジトリに置かない）
+assets/rulebook.pdf
+assets/team.jpg
+tools/src/

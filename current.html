@@ -106,6 +106,12 @@ td.x{text-align:center;color:#f38b8b;font-weight:700;padding-top:14px}
 .vs-none{background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:24px;text-align:center;color:var(--mute);font-size:13px}
 @media(max-width:900px){.vs-grid{grid-template-columns:1fr}.vs-mark{padding:2px 0;font-size:26px}}
 @media print{#vsmodal{display:none!important}}
+.avatar{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--line);flex:none;background:#141b25}
+.avatar-fb{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:11px;background:#3d2f52;color:#d8c9f0;font-weight:900;border:1px solid var(--line);border-radius:50%;flex:none}
+tbody th .avatar,tbody th .avatar-fb{width:24px;height:24px;vertical-align:-7px;margin-right:5px}
+tbody th .avatar-fb{display:inline-flex;font-size:11px}
+.members li .avatar,.members li .avatar-fb{width:34px;height:34px}
+.members li .avatar-fb{font-size:15px}
 </style></head><body><div class="wrap">
 <h1>PIYO CUP <b>黄チーム</b><small>＃夏の大運動会 Vol.1 — 9/10（木）〜9/12（土） 21:30〜24:30</small></h1>
 <div class="legend gamekey"><span><i style="background:#1E6FD9"></i>Overwatch</span><span><i style="background:#D7263D"></i>Apex Legends</span><span><i style="background:#F5C400"></i>Party Animals</span></div>
@@ -192,5 +198,39 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeVs();})
   });
  });
 });
+})();
+(function(){
+'use strict';
+var AV={'もこ':'moko','みかづき':'mika','みか':'mika','小林':'koba','こば':'koba','こばやし':'koba','くぁくぁ':'kua','くあ':'kua','にあ':'nia','ほんつば':'hontsuba','ほん':'hontsuba','まめ':'mame','もやしん':'moya','もや':'moya','みあ':'mia','だまお':'damao','なり':'nari','りょく':'ryoku','緑茶':'ryoku','ぴよ':'piyo','おが':'oga','しーのん':'shinon','ひかる':'hikaru','ろば':'roba','バンテス':'bantesu','セルバンテス':'bantesu','お茶':'ocha','みっちー':'micchi','もな':'mona','オト':'oto','シエスタ':'shiesta','ちけ':'chike','びたー':'bita','びた':'bita','ちゃさい':'chasai','さく':'saku'};
+function base(t){return (t||'').replace(/★大将/g,'').replace(/（[^）]*）/g,'').trim();}
+function icon(nm){
+ var k=AV[nm];
+ if(k){var img=document.createElement('img');img.className='avatar';img.src='assets/avatars/'+k+'.png';img.alt='';img.loading='lazy';return img;}
+ var fb=document.createElement('span');fb.className='avatar-fb';fb.textContent=nm.charAt(0)||'?';return fb;
+}
+function decorateNames(){
+ document.querySelectorAll('#sched .sec li .name,#red .sec li .name,#blue .sec li .name').forEach(function(n){
+  if(n.dataset.av)return;n.dataset.av='1';
+  var nm=base(n.textContent);if(!nm)return;
+  n.parentNode.insertBefore(icon(nm),n);
+ });
+}
+function decorateTable(){
+ document.querySelectorAll('#person tbody th').forEach(function(th){
+  if(th.dataset.av)return;th.dataset.av='1';
+  var nm=base(th.childNodes[0]&&th.childNodes[0].textContent);if(!nm)return;
+  th.insertBefore(icon(nm),th.firstChild);
+ });
+}
+function decorateMembers(){
+ document.querySelectorAll('#team .members li').forEach(function(li){
+  if(li.dataset.av)return;li.dataset.av='1';
+  var nm=base(li.childNodes[0]&&li.childNodes[0].textContent);if(!nm)return;
+  li.insertBefore(icon(nm),li.firstChild);
+ });
+}
+decorateNames();decorateTable();decorateMembers();
+var team=document.getElementById('team');
+if(team&&window.MutationObserver){new MutationObserver(decorateMembers).observe(team,{childList:true});}
 })();
 </script></body></html>
